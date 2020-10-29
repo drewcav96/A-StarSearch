@@ -11,14 +11,16 @@ public class Node {
 	private int _f;
 	private int _g;
 	private int _h;
-	// type 0 is traversable, 1 is not
-	private int _type;
+	private boolean _isTraversable;
+	private boolean _isStart;
+	private boolean _isEnd;
+	private boolean _isPath;
 	private Node _parent;
 	
-	public Node(int row, int col, int type) {
+	public Node(int row, int col, boolean isTraversable) {
 		_row = row;
 		_col = col;
-		_type = type;
+		_isTraversable = isTraversable;
 		_parent = null;
 	}
 	
@@ -38,6 +40,42 @@ public class Node {
 	
 	public void setParent(Node node) {
 		_parent = node;
+	}
+	
+	public void setPath() {
+		_isPath = true;
+	}
+	
+	public void setStart() throws IllegalStateException {
+		if (!_isEnd) {
+			_isStart = true;
+		} else {
+			throw new IllegalStateException(String.format("The Node at %s, %s is already an ending position!", _row, _col));
+		}
+	}
+	
+	public void setEnd() throws IllegalStateException {
+		if (!_isStart) {
+			_isEnd = true;
+		} else {
+			throw new IllegalStateException(String.format("The Node at %s, %s is already a starting position!", _row, _col));
+		}
+	}
+	
+	public boolean isTraversable() {
+		return _isTraversable;
+	}
+	
+	public boolean isStart() {
+		return _isStart;
+	}
+	
+	public boolean isEnd() {
+		return _isEnd;
+	}
+	
+	public boolean isPath() {
+		return _isPath;
 	}
 	
 	// accessor methods to get values
@@ -75,6 +113,6 @@ public class Node {
 	}
 	
 	public String toString() {
-		return "Node :" + _row + "_" + _col;
+		return String.format("Node: (%d, %d)", _row + 1, _col + 1);
 	}
 }
